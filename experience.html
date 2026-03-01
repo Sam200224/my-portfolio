@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Experience — Samrat Gautam</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .exp-timeline { position: relative; padding-left: 32px; }
+    .exp-timeline::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: 8px;
+      width: 1px; background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .exp-item { position: relative; padding-bottom: 56px; }
+    .exp-item:last-child { padding-bottom: 0; }
+    .exp-item::before {
+      content: ''; position: absolute; left: -36px; top: 8px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--accent); box-shadow: 0 0 14px var(--accent);
+    }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+    .exp-role { font-size: 1.15rem; font-weight: 700; }
+    .exp-date { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 1px; white-space: nowrap; }
+    .exp-company { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; letter-spacing: 0.5px; }
+    .exp-company span { color: var(--accent2); }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .exp-bullets li { font-size: 0.9rem; color: #7a8fa8; padding-left: 18px; position: relative; line-height: 1.65; }
+    .exp-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.7rem; top: 2px; }
+    .exp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .etag { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--accent2); background: rgba(0,136,255,0.07); border: 1px solid rgba(0,136,255,0.2); padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+    .edu-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin-top: 60px; position: relative; overflow: hidden; }
+    .edu-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); }
+    .edu-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(240,180,41,0.08); border: 1px solid rgba(240,180,41,0.2); color: var(--gold); font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 2px; padding: 4px 12px; border-radius: 4px; margin-bottom: 12px; }
+    .edu-degree { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .edu-school { font-size: 0.88rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="page-transition"></div>
+  <canvas id="canvas"></canvas>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" data-transition>SG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-transition>Home</a></li>
+      <li><a href="experience.html" data-transition>Experience</a></li>
+      <li><a href="projects.html" data-transition>Projects</a></li>
+      <li><a href="skills.html" data-transition>Skills</a></li>
+      <li><a href="hobbies.html" data-transition>Hobbies</a></li>
+      <li><a href="contact.html" data-transition>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <p class="page-tag reveal">02 — Experience</p>
+    <h1 class="page-title reveal">Where I've<br><span style="color:var(--accent)">Worked.</span></h1>
+  </div>
+
+  <div class="content">
+    <div class="exp-timeline">
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <span class="exp-role">Junior Application Developer</span>
+          <span class="exp-date">May 2025 – Present</span>
+        </div>
+        <div class="exp-company"><span>Credit Valley Conservation</span> · Mississauga, ON</div>
+        <ul class="exp-bullets">
+          <li>Designed and maintained 15+ data integration endpoints connecting internal and external systems via REST APIs</li>
+          <li>Extracted and transformed large structured datasets (100K+ records) using SQL-based logic to support operational reporting</li>
+          <li>Reduced recurring data inconsistencies by 30% through validation rules and structured logging mechanisms</li>
+          <li>Participated in CI/CD deployment pipelines using Azure DevOps for controlled production releases</li>
+          <li>Supported integration testing and UAT efforts across multi-system data workflows</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="etag">REST APIs</span><span class="etag">SQL</span><span class="etag">Azure DevOps</span><span class="etag">ETL</span><span class="etag">CI/CD</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <span class="exp-role">IT Assistant</span>
+          <span class="exp-date">May 2024 – Aug 2024</span>
+        </div>
+        <div class="exp-company"><span>Ontario Public Service (IT Source)</span> · Toronto, ON</div>
+        <ul class="exp-bullets">
+          <li>Extracted operational and financial datasets using advanced SQL queries to support executive-level reporting</li>
+          <li>Transformed raw structured data into validated outputs aligned with governance and compliance requirements</li>
+          <li>Supported development of dashboards enabling data-driven performance insights</li>
+          <li>Improved data quality by identifying and resolving inconsistencies across multi-source datasets</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="etag">SQL</span><span class="etag">Data Governance</span><span class="etag">Dashboards</span><span class="etag">Reporting</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <span class="exp-role">Software Engineer Co-op</span>
+          <span class="exp-date">Aug 2022 – Aug 2023</span>
+        </div>
+        <div class="exp-company"><span>John Deere Financial</span> · Grimsby, ON</div>
+        <ul class="exp-bullets">
+          <li>Built REST-based integration endpoints supporting enterprise financial systems with 99% uptime reliability</li>
+          <li>Designed and optimized SQL queries for batch processing and transformation of high-volume datasets</li>
+          <li>Improved release efficiency by 25% through Azure DevOps CI/CD implementation</li>
+          <li>Supported production monitoring including logging validation and issue resolution</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="etag">REST APIs</span><span class="etag">SQL</span><span class="etag">Azure DevOps</span><span class="etag">Java</span><span class="etag">Batch Processing</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <span class="exp-role">System Administration Associate</span>
+          <span class="exp-date">Jan 2022 – May 2022</span>
+        </div>
+        <div class="exp-company"><span>CiviConnect</span> · Beamsville, ON</div>
+        <ul class="exp-bullets">
+          <li>Developed and maintained client-facing applications using Node.js and web technologies</li>
+          <li>Improved data reporting efficiency by 20% using ETL pipelines and SQL optimization</li>
+          <li>Designed SharePoint-based intranet tools to streamline collaboration and information sharing</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="etag">Node.js</span><span class="etag">SQL</span><span class="etag">ETL</span><span class="etag">SharePoint</span>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <span class="exp-role">IT Analyst</span>
+          <span class="exp-date">Jan 2021 – May 2021</span>
+        </div>
+        <div class="exp-company"><span>Rogers Communications</span> · Toronto, ON</div>
+        <ul class="exp-bullets">
+          <li>Implemented backend components using Java and .NET frameworks</li>
+          <li>Supported integration of web applications with database systems and internal APIs</li>
+          <li>Debugged production-level issues in Agile environments</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="etag">Java</span><span class="etag">.NET</span><span class="etag">Agile</span><span class="etag">APIs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-box reveal">
+      <div class="edu-badge"> Dean's Honours List 2020–2021</div>
+      <div class="edu-degree">Bachelor of Science (Honours) — Computer Science Co-op</div>
+      <div class="edu-school">Brock University · St. Catharines, ON · Sep 2020 – April 2025</div>
+    </div>
+  </div>
+
+  <footer><p>Designed & Built by Samrat Gautam · 2025</p></footer>
+  <script src="script.js"></script>
+</body>
+</html>

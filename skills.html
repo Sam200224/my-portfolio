@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.bunny.net"/>
+  <link href="https://fonts.bunny.net/css?family=geist:300,400,500,600|geist-mono:400,500&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skills — Samrat Gautam</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .skills-intro { font-size: 1rem; color: #6a7f9a; line-height: 1.8; max-width: 600px; margin-bottom: 70px; }
+    .skills-section { margin-bottom: 70px; }
+    .skills-section-title { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
+    .skills-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .skill-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; transition: border-color 0.3s; }
+    .skill-item:hover { border-color: rgba(0,255,204,0.3); }
+    .skill-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .skill-name { font-size: 0.88rem; font-weight: 600; }
+    .skill-pct { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+    .skill-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .skill-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .skill-fill.gold { background: linear-gradient(90deg, var(--gold), #ff8c00); }
+    .skill-group { margin-bottom: 0; }
+    .tools-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tool-chip { font-family: var(--font-mono); font-size: 0.72rem; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); color: var(--text); background: var(--card); transition: all 0.3s; cursor: default; letter-spacing: 0.5px; }
+    .tool-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .tool-chip.blue:hover { border-color: var(--accent2); color: var(--accent2); }
+    .tool-chip.gold:hover { border-color: var(--gold); color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="page-transition"></div>
+  <canvas id="canvas"></canvas>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" data-transition>SG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-transition>Home</a></li>
+      <li><a href="experience.html" data-transition>Experience</a></li>
+      <li><a href="projects.html" data-transition>Projects</a></li>
+      <li><a href="skills.html" data-transition>Skills</a></li>
+      <li><a href="hobbies.html" data-transition>Hobbies</a></li>
+      <li><a href="contact.html" data-transition>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <p class="page-tag reveal">04 — Skills</p>
+    <h1 class="page-title reveal">What I<br><span style="color:var(--accent)">Work With.</span></h1>
+  </div>
+
+  <div class="content">
+    <p class="skills-intro reveal">Built across 5+ years of real-world enterprise environments — from financial systems at John Deere to government data pipelines at the Ontario Public Service. These aren't just tools I've read about.</p>
+
+    <div class="skills-section skill-group reveal">
+      <div class="skills-section-title">Languages</div>
+      <div class="skill-grid">
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">SQL</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">JavaScript</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Java</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Python</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill" data-width="65"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">C#</span><span class="skill-pct">60%</span></div><div class="skill-bar"><div class="skill-fill" data-width="60"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skills-section skill-group reveal">
+      <div class="skills-section-title">Backend & Data Engineering</div>
+      <div class="skill-grid">
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">REST APIs</span><span class="skill-pct">92%</span></div><div class="skill-bar"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">ETL / Data Pipelines</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Node.js / Express</span><span class="skill-pct">78%</span></div><div class="skill-bar"><div class="skill-fill" data-width="78"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">SQL Server / MySQL</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Data Validation & Quality</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">System Integration</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" data-width="82"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skills-section skill-group reveal">
+      <div class="skills-section-title">DevOps & Cloud</div>
+      <div class="skill-grid">
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Azure DevOps</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill gold" data-width="80"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">CI/CD Pipelines</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill gold" data-width="75"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Git / GitHub</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill gold" data-width="88"></div></div></div>
+        <div class="skill-item"><div class="skill-label"><span class="skill-name">Production Monitoring</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill gold" data-width="75"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skills-section reveal">
+      <div class="skills-section-title">Tools & Frameworks</div>
+      <div class="tools-cloud">
+        <span class="tool-chip">React</span>
+        <span class="tool-chip">Flask</span>
+        <span class="tool-chip blue">VS Code</span>
+        <span class="tool-chip blue">Postman</span>
+        <span class="tool-chip blue">SharePoint</span>
+        <span class="tool-chip gold">Agile / Scrum</span>
+        <span class="tool-chip gold">JIRA</span>
+        <span class="tool-chip">JSON / XML</span>
+        <span class="tool-chip">JWT Auth</span>
+        <span class="tool-chip blue">Power BI</span>
+        <span class="tool-chip">Swagger / OpenAPI</span>
+        <span class="tool-chip gold">UAT Testing</span>
+        <span class="tool-chip">Batch Processing</span>
+        <span class="tool-chip blue">Incident Management</span>
+        <span class="tool-chip">Gemini API</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer><p>Designed & Built by Samrat Gautam · 2025</p></footer>
+  <script src="script.js"></script>
+</body>
+</html>

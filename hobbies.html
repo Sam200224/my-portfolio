@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.bunny.net"/>
+  <link href="https://fonts.bunny.net/css?family=geist:300,400,500,600|geist-mono:400,500&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hobbies — Samrat Gautam</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .hobby-section { margin-bottom: 100px; }
+    .hobby-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .hobby-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 40px; font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+
+    .world-map-wrap {
+      background: #080b10; border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; margin-bottom: 30px;
+      position: relative; min-height: 420px;
+    }
+    #world-map-canvas { width: 100%; height: 420px; display: block; min-height: 420px; }
+    .world-map-wrap { min-height: 420px; }
+
+    .map-tooltip {
+      position: absolute; pointer-events: none;
+      background: rgba(12,18,32,0.97); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 14px;
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      color: var(--text); white-space: nowrap;
+      opacity: 0; transition: opacity 0.15s; z-index: 10;
+    }
+
+    .country-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .cstat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; transition: all 0.3s; }
+    .cstat:hover { border-color: var(--accent2); transform: translateY(-3px); }
+    .cstat-num { font-family: 'Space Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--accent2); }
+    .cstat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+    .countries-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .country-chip {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; padding: 8px 14px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; transition: all 0.3s; cursor: default;
+    }
+    .country-chip:hover { border-color: var(--accent2); color: var(--accent2); transform: translateY(-2px); }
+    .country-chip.special { border-color: rgba(240,180,41,0.4); }
+    .country-chip.special:hover { border-color: var(--gold); color: var(--gold); }
+
+    .soccer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .club-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: all 0.3s; position: relative; overflow: hidden; }
+    .club-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #00cc00, #28c840); opacity: 0; transition: opacity 0.3s; }
+    .club-card:hover { border-color: rgba(40,200,64,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+    .club-card:hover::before { opacity: 1; }
+    .club-emoji { font-size: 2rem; margin-bottom: 12px; }
+    .club-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .club-role { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: #28c840; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    .club-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    .lifestyle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    .lifestyle-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px; transition: all 0.3s; }
+    .lifestyle-card:hover { border-color: rgba(0,255,204,0.3); transform: translateY(-4px); }
+    .lifestyle-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .lifestyle-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .lifestyle-desc { font-size: 0.9rem; color: #6a7f9a; line-height: 1.7; }
+
+    @media(max-width:768px){
+      .country-stats { grid-template-columns: repeat(2,1fr); }
+      .soccer-grid, .lifestyle-grid { grid-template-columns: 1fr; }
+      #world-map-canvas { height: 260px; }
+      .world-map-wrap { min-height: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="page-transition"></div>
+  <canvas id="canvas"></canvas>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" data-transition>SG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-transition>Home</a></li>
+      <li><a href="experience.html" data-transition>Experience</a></li>
+      <li><a href="projects.html" data-transition>Projects</a></li>
+      <li><a href="skills.html" data-transition>Skills</a></li>
+      <li><a href="hobbies.html" data-transition>Hobbies</a></li>
+      <li><a href="contact.html" data-transition>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <p class="page-tag reveal">05 — Hobbies</p>
+    <h1 class="page-title reveal">Beyond<br><span style="color:var(--accent)">The Code.</span></h1>
+  </div>
+
+  <div class="content">
+
+    <div class="hobby-section">
+      <div class="hobby-title reveal">✈️ World Traveller</div>
+      <div class="hobby-sub reveal">17 countries · 5 continents · Everest Base Camp × 2</div>
+
+      <div class="country-stats reveal">
+        <div class="cstat"><div class="cstat-num">17</div><div class="cstat-label">Countries Visited</div></div>
+        <div class="cstat"><div class="cstat-num">2×</div><div class="cstat-label">Everest Base Camp</div></div>
+        <div class="cstat"><div class="cstat-num">5</div><div class="cstat-label">Continents</div></div>
+        <div class="cstat"><div class="cstat-num">5,364m</div><div class="cstat-label">Highest Altitude</div></div>
+      </div>
+
+      <div class="world-map-wrap reveal" style="margin-top:30px;">
+        <canvas id="world-map-canvas"></canvas>
+        <div class="map-tooltip" id="map-tooltip"></div>
+      </div>
+
+      <div class="countries-list reveal">
+        <span class="country-chip special">🏔 Nepal (EBC ×2)</span>
+        <span class="country-chip">🇻🇳 Vietnam</span>
+        <span class="country-chip">🇹🇭 Thailand</span>
+        <span class="country-chip">🇪🇸 Spain</span>
+        <span class="country-chip">🇮🇹 Italy</span>
+        <span class="country-chip">🇵🇹 Portugal</span>
+        <span class="country-chip">🇫🇷 France</span>
+        <span class="country-chip">🇨🇷 Costa Rica</span>
+        <span class="country-chip">🇹🇷 Turkey</span>
+        <span class="country-chip">🇨🇴 Colombia</span>
+        <span class="country-chip">🇳🇱 Netherlands</span>
+        <span class="country-chip">🇩🇴 Dominican Republic</span>
+        <span class="country-chip">🇲🇽 Mexico</span>
+        <span class="country-chip">🇺🇸 United States</span>
+        <span class="country-chip">🇶🇦 Qatar</span>
+        <span class="country-chip">🇬🇧 United Kingdom</span>
+        <span class="country-chip special">🇮🇸 Iceland</span>
+      </div>
+    </div>
+
+    <div class="hobby-section">
+      <div class="hobby-title reveal">⚽ The Beautiful Game</div>
+      <div class="hobby-sub reveal">Professional & semi-professional matchday operations · CPL · MLS · CFL</div>
+      <div class="soccer-grid">
+        <div class="club-card reveal">
+          <div class="club-emoji">⚽</div>
+          <div class="club-name">Forge FC</div>
+          <div class="club-role">Game Day Crew</div>
+          <div class="club-desc">Canadian Premier League. Supported matchday operations and fan experience at Tim Hortons Field, Hamilton. Canada's first professional soccer champion.</div>
+        </div>
+        <div class="club-card reveal">
+          <div class="club-emoji">🔴</div>
+          <div class="club-name">Toronto FC</div>
+          <div class="club-role">Game Day Crew</div>
+          <div class="club-desc">Major League Soccer. Contributed to event operations and fan experience at BMO Field — one of the most storied clubs in Canadian soccer history.</div>
+        </div>
+        <div class="club-card reveal">
+          <div class="club-emoji">🐯</div>
+          <div class="club-name">Hamilton Tiger-Cats</div>
+          <div class="club-role">Game Day Crew</div>
+          <div class="club-desc">Canadian Football League franchise. Multi-sport event operations and fan engagement, bringing high-energy gameday experiences to Hamilton fans.</div>
+        </div>
+        <div class="club-card reveal">
+          <div class="club-emoji">🎓</div>
+          <div class="club-name">Brock Athletics</div>
+          <div class="club-role">Game Day Crew</div>
+          <div class="club-desc">University-level sports at Brock University. Supported student athlete events and built the foundation of event management experience.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hobby-section">
+      <div class="hobby-title reveal">💪 Lifestyle</div>
+      <div class="hobby-sub reveal">Discipline off the screen too</div>
+      <div class="lifestyle-grid">
+        <div class="lifestyle-card reveal">
+          <div class="lifestyle-icon">🏋️</div>
+          <div class="lifestyle-title">Fitness & Training</div>
+          <div class="lifestyle-desc">Consistency in the gym is the same discipline I bring to code. Training has taught me that real progress — whether in reps or in systems — comes from showing up every day and doing the work. The same mindset that got me to Everest Base Camp twice.</div>
+        </div>
+        <div class="lifestyle-card reveal">
+          <div class="lifestyle-icon">👨‍🍳</div>
+          <div class="lifestyle-title">Cooking</div>
+          <div class="lifestyle-desc">17 countries means 17 food cultures to learn from. Cooking is how I bring those travels home — whether it's a Thai curry from Bangkok, a pasta from Rome, or a Nepali dal bhat after a long hike. Food is the best souvenir.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer><p>Designed & Built by Samrat Gautam · 2025</p></footer>
+  <script src="script.js"></script>
+  <script>
+  (function() {
+    const canvas = document.getElementById('world-map-canvas');
+    const wrap   = document.querySelector('.world-map-wrap');
+    const tooltip = document.getElementById('map-tooltip');
+    if (!canvas || !wrap) return;
+    const ctx = canvas.getContext('2d');
+
+    const MAP_H = 420;
+
+    function setSize() {
+      canvas.width  = wrap.offsetWidth  || 900;
+      canvas.height = MAP_H;
+    }
+
+    // Equirectangular projection — simple, predictable, correct
+    function project(lon, lat) {
+      const W = canvas.width, H = canvas.height;
+      const padding = 20;
+      const x = padding + (lon + 180) / 360 * (W - padding * 2);
+      const y = padding + (90  - lat)  / 180 * (H - padding * 2);
+      return [x, y];
+    }
+
+    // c: 0=unvisited, 1=teal, 2=gold, 3=blue
+    const countries = [
+      // ── VISITED ──────────────────────────────────────────────────────
+      {n:'Canada',            c:1, pts:[[-141,60],[-120,60],[-95,60],[-83,46],[-67,47],[-60,47],[-60,60],[-95,70],[-120,70],[-141,70]]},
+      {n:'United States',     c:1, pts:[[-124,49],[-95,49],[-83,46],[-75,35],[-80,25],[-97,26],[-117,32],[-124,37]]},
+      {n:'Mexico',            c:1, pts:[[-117,32],[-97,26],[-90,21],[-87,16],[-92,18],[-90,21],[-105,20],[-117,29]]},
+      {n:'Costa Rica',        c:1, pts:[[-83,11],[-85,10],[-85,9],[-83,8],[-83,11]]},
+      {n:'Dominican Rep.',    c:1, pts:[[-74,20],[-69,19],[-69,18],[-72,17],[-74,18]]},
+      {n:'Colombia',          c:1, pts:[[-77,8],[-72,12],[-67,6],[-70,2],[-77,-1],[-79,1]]},
+      {n:'Iceland',           c:1, pts:[[-24,64],[-22,66],[-13,66],[-13,64],[-18,63],[-24,63]]},
+      {n:'United Kingdom',    c:1, pts:[[-5,50],[-3,50],[0,51],[2,52],[0,58],[-3,58],[-6,56],[-5,50]]},
+      {n:'Netherlands',       c:1, pts:[[3,51],[7,53],[7,52],[4,51]]},
+      {n:'France',            c:1, pts:[[-2,43],[3,43],[7,44],[7,49],[2,51],[-2,49]]},
+      {n:'Spain',             c:1, pts:[[-9,44],[3,43],[3,40],[-1,37],[-5,36],[-9,38]]},
+      {n:'Portugal',          c:1, pts:[[-9,42],[-6,42],[-7,37],[-9,37]]},
+      {n:'Italy',             c:1, pts:[[7,44],[14,44],[16,38],[15,37],[12,38],[7,43]]},
+      {n:'Turkey',            c:2, pts:[[26,42],[44,42],[44,36],[36,36],[26,36]]},
+      {n:'Qatar',             c:2, pts:[[51,26],[51,24],[50,24],[50,26]]},
+      {n:'Nepal',             c:2, pts:[[80,30],[88,28],[88,27],[80,27]]},
+      {n:'Thailand',          c:3, pts:[[98,20],[102,22],[103,18],[100,6],[98,8]]},
+      {n:'Vietnam',           c:3, pts:[[102,22],[108,22],[109,12],[107,10],[103,10],[102,15]]},
+      // ── BACKGROUND ───────────────────────────────────────────────────
+      {n:'',c:0,pts:[[-73,76],[-12,83],[-12,76],[-44,60]]}, // Greenland
+      {n:'',c:0,pts:[[-35,-5],[-34,-8],[-43,-23],[-48,-28],[-53,-33],[-57,-30],[-60,-5],[-50,-2],[-44,2]]}, // Brazil
+      {n:'',c:0,pts:[[-53,-33],[-68,-54],[-65,-55],[-53,-38]]}, // Argentina
+      {n:'',c:0,pts:[[-80,-3],[-75,-14],[-68,-14],[-69,-18],[-76,-14],[-80,-3]]}, // Peru
+      {n:'',c:0,pts:[[-72,12],[-60,8],[-61,11]]}, // Venezuela
+      {n:'',c:0,pts:[[5,58],[15,70],[28,71],[30,68],[15,60]]}, // Norway
+      {n:'',c:0,pts:[[11,56],[22,68],[26,66],[15,60]]}, // Sweden
+      {n:'',c:0,pts:[[22,60],[30,70],[29,60]]}, // Finland
+      {n:'',c:0,pts:[[6,47],[15,50],[14,54],[7,55]]}, // Germany
+      {n:'',c:0,pts:[[14,54],[24,54],[24,50],[14,50]]}, // Poland
+      {n:'',c:0,pts:[[22,52],[40,52],[38,45],[22,45]]}, // Ukraine
+      {n:'',c:0,pts:[[28,62],[60,70],[60,55],[28,55]]}, // Russia W
+      {n:'',c:0,pts:[[60,65],[140,72],[140,50],[60,50]]}, // Russia E
+      {n:'',c:0,pts:[[73,40],[135,48],[135,20],[110,18],[73,25]]}, // China
+      {n:'',c:0,pts:[[68,36],[97,28],[92,8],[77,8],[68,22]]}, // India
+      {n:'',c:0,pts:[[36,30],[55,26],[58,22],[45,12],[36,22]]}, // Arabia
+      {n:'',c:0,pts:[[44,38],[62,38],[62,25],[44,25]]}, // Iran
+      {n:'',c:0,pts:[[-17,15],[50,15],[50,-5],[-17,-5]]}, // Africa (approx)
+      {n:'',c:0,pts:[[14,-5],[35,-5],[35,-35],[14,-35]]}, // S Africa
+      {n:'',c:0,pts:[[114,-22],[154,-28],[151,-38],[114,-35]]}, // Australia
+      {n:'',c:0,pts:[[95,6],[115,8],[130,-2],[115,-8],[95,-5]]}, // Indonesia
+      {n:'',c:0,pts:[[130,31],[145,43],[143,45],[130,43]]}, // Japan
+      {n:'',c:0,pts:[[92,28],[101,24],[100,16],[92,16]]}, // Myanmar
+      {n:'',c:0,pts:[[100,2],[104,2],[104,1],[100,1]]}, // Singapore
+      {n:'',c:0,pts:[[125,8],[126,18],[122,18],[120,8]]}, // Philippines
+    ];
+
+    const FILL   = {0:'#141a14', 1:'#00ffcc', 2:'#f0b429', 3:'#0088ff'};
+    const STROKE = {0:'#1e281e', 1:'#00ffcc', 2:'#f0b429', 3:'#0088ff'};
+
+    const hitmap = []; // for hover
+
+    function draw(ts) {
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Ocean
+      ctx.fillStyle = '#080b10';
+      ctx.fillRect(0, 0, W, H);
+
+      // Graticule
+      ctx.strokeStyle = '#111a11';
+      ctx.lineWidth = 0.4;
+      for (let lon = -180; lon <= 180; lon += 30) {
+        ctx.beginPath();
+        const [x0, y0] = project(lon, 90);
+        ctx.moveTo(x0, y0);
+        for (let lat = 80; lat >= -80; lat -= 5) {
+          const [x, y] = project(lon, lat); ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      for (let lat = -60; lat <= 60; lat += 30) {
+        ctx.beginPath();
+        const [x0] = project(-180, lat); ctx.moveTo(x0, project(-180,lat)[1]);
+        for (let lon = -170; lon <= 180; lon += 5) {
+          const [x, y] = project(lon, lat); ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      hitmap.length = 0;
+
+      countries.forEach(country => {
+        if (country.pts.length < 3) return;
+        const pts = country.pts.map(([lo, la]) => project(lo, la));
+        const isVisited = country.c > 0;
+        const glow = isVisited ? 0.6 + 0.4 * Math.sin(ts * 0.0018 + country.pts[0][0] * 0.18) : 0;
+
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        pts.slice(1).forEach(([x, y]) => ctx.lineTo(x, y));
+        ctx.closePath();
+
+        if (isVisited) {
+          ctx.save();
+          ctx.shadowColor = FILL[country.c];
+          ctx.shadowBlur  = 8 + 14 * glow;
+          ctx.fillStyle   = FILL[country.c];
+          ctx.globalAlpha = 0.45 + 0.45 * glow;
+          ctx.fill();
+          ctx.shadowBlur  = 0;
+          ctx.strokeStyle = STROKE[country.c];
+          ctx.lineWidth   = 1.2;
+          ctx.globalAlpha = 0.7 + 0.3 * glow;
+          ctx.stroke();
+          ctx.restore();
+          if (country.n) hitmap.push({ n: country.n, pts });
+        } else {
+          ctx.globalAlpha = 1;
+          ctx.fillStyle   = FILL[0];
+          ctx.fill();
+          ctx.strokeStyle = STROKE[0];
+          ctx.lineWidth   = 0.5;
+          ctx.stroke();
+        }
+      });
+
+      ctx.globalAlpha = 1;
+
+      // Legend
+      const items = [['#00ffcc','Americas · Europe'],['#f0b429','Middle East · Nepal'],['#0088ff','Southeast Asia']];
+      items.forEach(([col, lbl], i) => {
+        ctx.fillStyle = col; ctx.globalAlpha = 0.85;
+        ctx.fillRect(20 + i * 168, H - 26, 9, 9);
+        ctx.globalAlpha = 1; ctx.fillStyle = '#4a5a4a';
+        ctx.font = '9px monospace'; ctx.fillText(lbl, 34 + i * 168, H - 19);
+      });
+      ctx.fillStyle = '#2a3a2a'; ctx.textAlign = 'right';
+      ctx.fillText('17 countries', W - 16, H - 19);
+      ctx.textAlign = 'left';
+
+      requestAnimationFrame(draw);
+    }
+
+    function pointInPoly(x, y, pts) {
+      let inside = false;
+      for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+        const [xi,yi] = pts[i], [xj,yj] = pts[j];
+        if ((yi>y) !== (yj>y) && x < (xj-xi)*(y-yi)/(yj-yi)+xi) inside = !inside;
+      }
+      return inside;
+    }
+
+    canvas.addEventListener('mousemove', e => {
+      const r  = canvas.getBoundingClientRect();
+      const mx = (e.clientX - r.left) * (canvas.width  / r.width);
+      const my = (e.clientY - r.top)  * (canvas.height / r.height);
+      const hit = hitmap.find(h => pointInPoly(mx, my, h.pts));
+      if (hit) {
+        const wr = wrap.getBoundingClientRect();
+        tooltip.style.opacity = '1';
+        tooltip.style.left = (e.clientX - wr.left + 12) + 'px';
+        tooltip.style.top  = (e.clientY - wr.top  - 36) + 'px';
+        tooltip.textContent = hit.n;
+        canvas.style.cursor = 'pointer';
+      } else {
+        tooltip.style.opacity = '0';
+        canvas.style.cursor = 'default';
+      }
+    });
+    canvas.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
+
+    // Init — wait one frame so layout is ready
+    window.addEventListener('load', () => {
+      setSize();
+      requestAnimationFrame(draw);
+    });
+    // Fallback if load already fired
+    if (document.readyState === 'complete') { setSize(); requestAnimationFrame(draw); }
+    window.addEventListener('resize', setSize);
+
+    function setSize() {
+      canvas.width  = wrap.offsetWidth || 900;
+      canvas.height = MAP_H;
+    }
+  })();
+  </script>
+</body>
+</html>

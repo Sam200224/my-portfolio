@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Samrat Gautam — Developer</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .hero-wrap {
+      position: relative; z-index: 1; min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 400px;
+      align-items: center; gap: 60px;
+      padding: 80px 60px 0; max-width: 1200px; margin: 0 auto;
+    }
+    .hero-tag {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+      opacity: 0; animation: fadeUp 0.8s forwards 0.3s;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulse 2s infinite; }
+    .hero-name {
+      font-size: clamp(3rem, 7vw, 6rem); font-weight: 800;
+      line-height: 0.95; letter-spacing: -3px; margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.8s forwards 0.5s;
+    }
+    .hero-name .accent { color: var(--accent); }
+    .hero-name .line2 { display: block; }
+    .hero-typing {
+      font-family: 'Space Mono', monospace; font-size: 1.1rem;
+      color: var(--muted); margin-bottom: 16px; min-height: 1.8rem;
+      opacity: 0; animation: fadeUp 0.8s forwards 0.7s;
+    }
+    .typed { color: var(--accent2); }
+    .cursor-blink { display: inline-block; width: 2px; height: 1em; background: var(--accent); margin-left: 2px; vertical-align: middle; animation: blink 1s infinite; }
+    .hero-desc {
+      font-size: 0.98rem; color: #6a7f9a; line-height: 1.75;
+      max-width: 480px; margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.8s forwards 0.85s;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s forwards 1s; }
+    .btn {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 4px; text-decoration: none; cursor: none; transition: all 0.3s;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); font-weight: 700; border: 2px solid var(--accent); }
+    .btn-primary:hover { background: transparent; color: var(--accent); box-shadow: 0 0 30px rgba(0,255,204,0.3); }
+    .btn-secondary { background: transparent; color: var(--text); border: 2px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+    .hero-right { opacity: 0; animation: fadeIn 1s forwards 0.8s; }
+    .photo-frame { position: relative; width: 100%; max-width: 360px; margin: 0 auto; }
+    .photo-frame::before {
+      content: ''; position: absolute; inset: -2px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), transparent);
+      z-index: -1; opacity: 0.6;
+    }
+    .photo-frame::after {
+      content: ''; position: absolute;
+      top: 16px; left: 16px; right: -16px; bottom: -16px;
+      border: 1px solid rgba(0,255,204,0.15); border-radius: 16px; z-index: -2;
+    }
+    .photo-frame img { width: 100%; border-radius: 14px; display: block; object-fit: cover; object-position: top center; aspect-ratio: 3/4; filter: contrast(1.05); }
+    .photo-badge {
+      position: absolute; bottom: 24px; left: -20px;
+      background: rgba(12,18,32,0.95); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 18px; backdrop-filter: blur(10px);
+    }
+    .photo-badge2 {
+      position: absolute; top: 24px; right: -20px;
+      background: rgba(12,18,32,0.95); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 18px; backdrop-filter: blur(10px);
+    }
+    .badge-num { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    .badge-num.blue { color: var(--accent2); }
+    .badge-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 60px; z-index: 1;
+      font-family: 'Space Mono', monospace; font-size: 0.62rem;
+      letter-spacing: 3px; color: var(--muted); text-transform: uppercase;
+      display: flex; align-items: center; gap: 12px;
+      opacity: 0; animation: fadeUp 0.8s forwards 1.3s;
+    }
+    .hero-scroll::before { content: ''; width: 40px; height: 1px; background: var(--muted); }
+    .quick-nav {
+      position: relative; z-index: 1; max-width: 1100px; margin: 0 auto;
+      padding: 60px 60px 120px;
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+    }
+    .qcard {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px 20px; text-decoration: none;
+      color: var(--text); transition: all 0.35s; position: relative;
+      overflow: hidden; cursor: none; display: block;
+    }
+    .qcard::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .qcard:hover { border-color: rgba(0,255,204,0.3); transform: translateY(-5px); box-shadow: 0 16px 50px rgba(0,0,0,0.4); }
+    .qcard:hover::before { opacity: 1; }
+    .qcard-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .qcard-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .qcard-sub { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
+    .qcard-arrow { position: absolute; bottom: 16px; right: 16px; color: var(--muted); font-size: 0.85rem; transition: transform 0.3s, color 0.3s; }
+    .qcard:hover .qcard-arrow { transform: translate(3px,-3px); color: var(--accent); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 6px var(--accent)} 50%{box-shadow:0 0 18px var(--accent)} }
+    @media(max-width:900px){
+      .hero-wrap{grid-template-columns:1fr;padding:120px 24px 40px;}
+      .hero-right{display:none;}
+      .quick-nav{grid-template-columns:repeat(2,1fr);padding:40px 24px 80px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="page-transition"></div>
+  <canvas id="canvas"></canvas>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" data-transition>SG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-transition>Home</a></li>
+      <li><a href="experience.html" data-transition>Experience</a></li>
+      <li><a href="projects.html" data-transition>Projects</a></li>
+      <li><a href="skills.html" data-transition>Skills</a></li>
+      <li><a href="hobbies.html" data-transition>Hobbies</a></li>
+      <li><a href="contact.html" data-transition>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-wrap">
+    <div>
+      <p class="hero-tag"><span class="dot"></span> Available for opportunities</p>
+      <h1 class="hero-name"><span class="accent">Samrat</span><span class="line2">Gautam.</span></h1>
+      <p class="hero-typing"><span class="typed" id="typed-text"></span><span class="cursor-blink"></span></p>
+      <p class="hero-desc">Computer Science graduate building reliable data systems, enterprise APIs, and clean software. 5+ years of experience across top Canadian organizations.</p>
+      <div class="hero-btns">
+        <a href="experience.html" class="btn btn-primary" data-transition>View My Work</a>
+        <a href="contact.html" class="btn btn-secondary" data-transition>Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="photo-frame">
+        <img src="samrat.jpeg" alt="Samrat Gautam"/>
+        <div class="photo-badge">
+          <div class="badge-num">5+</div>
+          <div class="badge-label">Years Exp.</div>
+        </div>
+        <div class="photo-badge2">
+          <div class="badge-num blue">17</div>
+          <div class="badge-label">Countries </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">Explore my work</div>
+  <div class="glow-line"></div>
+
+  <div class="quick-nav">
+    <a href="experience.html" class="qcard reveal" data-transition>
+      <div class="qcard-icon"></div>
+      <div class="qcard-title">Experience</div>
+      <div class="qcard-sub">John Deere · OPS · CVC</div>
+      <div class="qcard-arrow">↗</div>
+    </a>
+    <a href="projects.html" class="qcard reveal" data-transition>
+      <div class="qcard-icon"></div>
+      <div class="qcard-title">Projects</div>
+      <div class="qcard-sub">SaaS · KPI · AI · APIs</div>
+      <div class="qcard-arrow">↗</div>
+    </a>
+    <a href="skills.html" class="qcard reveal" data-transition>
+      <div class="qcard-icon"></div>
+      <div class="qcard-title">Skills</div>
+      <div class="qcard-sub">SQL · Node · Azure · REST</div>
+      <div class="qcard-arrow">↗</div>
+    </a>
+    <a href="hobbies.html" class="qcard reveal" data-transition>
+      <div class="qcard-icon"></div>
+      <div class="qcard-title">Hobbies</div>
+      <div class="qcard-sub">17 Countries · Soccer · Fitness</div>
+      <div class="qcard-arrow">↗</div>
+    </a>
+    <a href="contact.html" class="qcard reveal" data-transition>
+      <div class="qcard-icon"></div>
+      <div class="qcard-title">Contact</div>
+      <div class="qcard-sub">Let's connect</div>
+      <div class="qcard-arrow">↗</div>
+    </a>
+  </div>
+
+  <footer><p>Designed & Built by Samrat Gautam · 2026</p></footer>
+  <script src="script.js"></script>
+  <script>
+    const phrases = ['Application Developer','Data Integration Engineer','REST API Builder','SaaS Builder','SQL & ETL Specialist','Dean\'s Honours Graduate 🎓'];
+    let pi=0,ci=0,deleting=false,wait=0;
+    const typedEl=document.getElementById('typed-text');
+    function type(){
+      const phrase=phrases[pi];
+      if(!deleting){typedEl.textContent=phrase.slice(0,ci+1);ci++;if(ci===phrase.length){deleting=true;wait=55;}}
+      else{if(wait>0){wait--;setTimeout(type,30);return;}typedEl.textContent=phrase.slice(0,ci-1);ci--;if(ci===0){deleting=false;pi=(pi+1)%phrases.length;}}
+      setTimeout(type,deleting?38:78);
+    }
+    setTimeout(type,1200);
+  </script>
+</body>
+</html>

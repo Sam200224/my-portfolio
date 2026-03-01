@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Samrat Gautam</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .contact-intro { font-size: 1.05rem; color: #6a7f9a; line-height: 1.85; margin-bottom: 40px; }
+    .contact-intro strong { color: var(--text); }
+    .contact-links { display: flex; flex-direction: column; gap: 14px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 18px;
+      text-decoration: none; color: var(--text);
+      padding: 18px 22px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 10px;
+      transition: all 0.3s; cursor: none;
+    }
+    .contact-link:hover { border-color: var(--accent); transform: translateX(8px); box-shadow: -4px 0 20px rgba(0,255,204,0.1); }
+    .contact-link-icon { font-size: 1.3rem; width: 28px; text-align: center; }
+    .contact-link-info { flex: 1; }
+    .contact-link-label { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3px; }
+    .contact-link-value { font-size: 0.92rem; }
+    .contact-link-arrow { color: var(--muted); font-size: 0.9rem; transition: all 0.3s; }
+    .contact-link:hover .contact-link-arrow { color: var(--accent); transform: translate(3px, -3px); }
+
+    /* PHOTO SIDE */
+    .contact-photo-wrap { position: relative; }
+    .contact-photo-frame { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .contact-photo-frame img { width: 100%; display: block; object-fit: cover; object-position: top center; aspect-ratio: 4/5; filter: contrast(1.05); }
+    .contact-photo-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(8,11,16,0.95), transparent);
+      padding: 30px 24px 24px;
+    }
+    .contact-photo-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
+    .contact-photo-title { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--accent); letter-spacing: 2px; }
+    .availability-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,255,204,0.08); border: 1px solid rgba(0,255,204,0.25);
+      border-radius: 20px; padding: 8px 16px; margin-top: 60px;
+      font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--accent); letter-spacing: 1px;
+    }
+    .avail-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 6px var(--accent)} 50%{box-shadow:0 0 16px var(--accent)} }
+    @media(max-width:900px){ .contact-grid{grid-template-columns:1fr; gap:50px;} }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="page-transition"></div>
+  <canvas id="canvas"></canvas>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" data-transition>SG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-transition>Home</a></li>
+      <li><a href="experience.html" data-transition>Experience</a></li>
+      <li><a href="projects.html" data-transition>Projects</a></li>
+      <li><a href="skills.html" data-transition>Skills</a></li>
+      <li><a href="hobbies.html" data-transition>Hobbies</a></li>
+      <li><a href="contact.html" data-transition>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <p class="page-tag reveal">06 — Contact</p>
+    <h1 class="page-title reveal">Let's<br><span style="color:var(--accent)">Connect.</span></h1>
+  </div>
+
+  <div class="content">
+    <div class="contact-grid">
+      <div>
+        <p class="contact-intro reveal">
+          I'm always open to new <strong>opportunities</strong>, interesting projects, or just a conversation about tech and travel. Whether you're a recruiter, a fellow developer, or someone who wants to talk soccer — my inbox is open.
+        </p>
+        <div class="availability-badge reveal">
+          <span class="avail-dot"></span> Open to full-time opportunities
+        </div>
+        <br><br>
+        <div class="contact-links reveal">
+          <a href="mailto:samrat.gautam2015@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉️</span>
+            <div class="contact-link-info">
+              <div class="contact-link-label">Email</div>
+              <div class="contact-link-value">samrat.gautam2015@gmail.com</div>
+            </div>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+          <a href="https://linkedin.com/in/samratgautam" target="_blank" class="contact-link">
+            <span class="contact-link-icon">💼</span>
+            <div class="contact-link-info">
+              <div class="contact-link-label">LinkedIn</div>
+              <div class="contact-link-value">linkedin.com/in/samratgautam</div>
+            </div>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+          <a href="https://github.com/samratgautam" target="_blank" class="contact-link">
+            <span class="contact-link-icon">🐙</span>
+            <div class="contact-link-info">
+              <div class="contact-link-label">GitHub</div>
+              <div class="contact-link-value">github.com/samratgautam</div>
+            </div>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+          <a href="tel:6478071664" class="contact-link">
+            <span class="contact-link-icon">📱</span>
+            <div class="contact-link-info">
+              <div class="contact-link-label">Phone</div>
+              <div class="contact-link-value">647-807-1664</div>
+            </div>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+          <div class="contact-link" style="cursor:default;">
+            <span class="contact-link-icon">📍</span>
+            <div class="contact-link-info">
+              <div class="contact-link-label">Location</div>
+              <div class="contact-link-value">Brampton, Ontario, Canada</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-photo-wrap reveal">
+        <div class="contact-photo-frame">
+          <img src="samrat.jpeg" alt="Samrat Gautam"/>
+          <div class="contact-photo-overlay">
+            <div class="contact-photo-name">Samrat Gautam</div>
+            <div class="contact-photo-title">Application Developer · Brampton, ON</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>Designed & Built by Samrat Gautam · 2025</p></footer>
+  <script src="script.js"></script>
+</body>
+</html>
