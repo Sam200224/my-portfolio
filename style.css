@@ -20,7 +20,11 @@ body {
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
-  cursor: none;
+}
+
+/* Only hide cursor on devices that actually have a mouse */
+@media (pointer: fine) {
+  body { cursor: none; }
 }
 
 /* CURSOR */
@@ -58,12 +62,14 @@ nav {
   transition: transform 0.3s ease;
 }
 nav.hidden { transform: translateY(-100%); }
+
 .nav-logo {
   font-family: 'Space Mono', monospace;
   font-size: 1rem; color: var(--accent); letter-spacing: 2px;
   text-decoration: none;
 }
 .nav-logo span { color: var(--text); }
+
 .nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-links a {
   font-family: 'Space Mono', monospace; font-size: 0.72rem;
@@ -77,6 +83,19 @@ nav.hidden { transform: translateY(-100%); }
 }
 .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+/* Mobile menu button (requires 1 small HTML add: <button id="menuBtn" class="menu-btn" ...>) */
+.menu-btn {
+  display: none;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+}
 
 /* PAGE HEADER */
 .page-hero {
@@ -140,7 +159,39 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  nav { padding: 16px 24px; }
-  .nav-links { display: none; }
-  .page-hero, .content { padding-left: 24px; padding-right: 24px; }
+  nav { padding: 16px 20px; }
+  .page-hero, .content { padding-left: 20px; padding-right: 20px; }
+
+  .page-hero { padding-top: 120px; padding-bottom: 60px; }
+  .page-title { letter-spacing: -1px; line-height: 1.1; }
+
+  /* Canvas off on mobile (performance) */
+  #canvas { display: none; }
+
+  /* Cursor off on touch devices */
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+
+  /* Mobile nav: show button + slide-down menu */
+  .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 16px;
+    right: 16px;
+    background: rgba(14,20,32,0.96);
+    border: 1px solid var(--border);
+    padding: 16px 14px;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 0.7rem; }
+}
+
+@media (max-width: 480px) {
+  nav { padding: 14px 16px; }
+  .page-hero, .content { padding-left: 16px; padding-right: 16px; }
+  .page-hero { padding-top: 108px; }
 }
